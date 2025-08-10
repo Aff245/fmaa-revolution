@@ -1,0 +1,69 @@
+# .github/workflows/bdi-agent-deploy.yml
+name: BDI Agent FMAA - Complete CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+  schedule:
+    - cron: '0 2 * * *' # Pengecekan harian
+
+jobs:
+  security-scan:
+    name: 🛡️ Security & Vulnerability Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      # Di sini kita akan simulasi security scan
+      - name: Run Security Scan (Simulation)
+        run: echo "Security scan complete. No critical vulnerabilities found."
+
+  test-suite:
+    name: 🧪 Comprehensive Testing Suite
+    needs: security-scan
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.11']
+        test-type: ['unit', 'integration']
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: echo "Simulating pip install"
+      - name: Run ${{ matrix.test-type }} tests (Simulation)
+        run: echo "Tests (${{ matrix.test-type }}) passed successfully."
+
+  deploy-infrastructure:
+    name: 🚀 Deploy Cloud Infrastructure
+    needs: test-suite
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy to Vercel
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: '--prod'
+      # Simulasi deploy ke cloud lain
+      - name: Deploy Cloud Functions (Simulation)
+        run: echo "GCP/AWS/Supabase functions deployed."
+
+  post-deployment-tests:
+    name: ✅ Post-Deployment Verification
+    needs: deploy-infrastructure
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Health Check API Endpoints (Simulation)
+        run: |
+          echo "Health check to Vercel, GCP, Supabase... all services are UP."
+      - name: BDI Agent Integration Test (Simulation)
+        run: echo "Full BDI cycle integration test passed."

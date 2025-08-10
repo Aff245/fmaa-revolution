@@ -1,0 +1,8 @@
+{
+  "name": "fmaa-revolution-dashboard",
+  "version": "1.0.0",
+  "dependencies": {
+    "@vercel/kv": "^0.2.3",
+    "cors": "^2.8.5"
+  }
+}
