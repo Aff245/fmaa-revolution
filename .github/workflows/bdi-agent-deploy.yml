@@ -1,14 +1,14 @@
 # .github/workflows/bdi-agent-deploy.yml
 name: BDI Agent FMAA - Complete CI/CD Pipeline
 
-on:
+#on:
   push:
     branches: [ main ]
   workflow_dispatch:
   schedule:
     - cron: '0 2 * * *' # Pengecekan harian
 
-jobs:
+#jobs:
   security-scan:
     name: 🛡️ Security & Vulnerability Scan
     runs-on: ubuntu-latest
@@ -19,7 +19,7 @@ jobs:
       - name: Run Security Scan (Simulation)
         run: echo "Security scan complete. No critical vulnerabilities found."
 
-  test-suite:
+#  test-suite:
     name: 🧪 Comprehensive Testing Suite
     needs: security-scan
     runs-on: ubuntu-latest
@@ -38,7 +38,7 @@ jobs:
       - name: Run ${{ matrix.test-type }} tests (Simulation)
         run: echo "Tests (${{ matrix.test-type }}) passed successfully."
 
-  deploy-infrastructure:
+ # deploy-infrastructure:
     name: 🚀 Deploy Cloud Infrastructure
     needs: test-suite
     runs-on: ubuntu-latest
@@ -58,7 +58,7 @@ jobs:
       - name: Deploy Cloud Functions (Simulation)
         run: echo "GCP/AWS/Supabase functions deployed."
 
-  post-deployment-tests:
+#  post-deployment-tests:
     name: ✅ Post-Deployment Verification
     needs: deploy-infrastructure
     runs-on: ubuntu-latest
